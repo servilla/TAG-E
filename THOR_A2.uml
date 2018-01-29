@@ -1,0 +1,39 @@
+@startuml
+
+actor DataProducer
+actor PaperProducer
+database DataRepository
+database Publisher
+database DataCite
+database CrossRef
+database BackEndService
+database Scholix
+
+DataProducer -> DataRepository: submit data
+DataRepository -> DataRepository: review data
+DataRepository -> DataRepository: accept data
+DataRepository -> DataRepository: embargo data
+PaperProducer <-- DataRepository: data link
+PaperProducer -> Publisher: submit paper (with data link)
+Publisher -> DataRepository: request data (with data link)
+Publisher <-- DataRepository: data
+Publisher -> Publisher: review data
+Publisher -> PaperProducer: data accepted
+PaperProducer -> DataRepository: release data
+DataRepository -> DataRepository: create data DOI
+DataRepository -> DataCite: register data DOI
+DataRepository -> DataRepository: publish data
+DataRepository -> PaperProducer: DOI
+PaperProducer -> Publisher: release paper (with data DOI)
+Publisher -> Publisher: create paper DOI (with data DOI)
+Publisher -> CrossRef: register paper DOI
+Publisher -> Publisher: publish paper (with data DOI)
+DataRepository -> DataCite: update data DOI with paper DOI relationship
+DataCite -> BackEndService: register data_to_paper DOI relationship
+DataCite -> Scholix: new relationship links exist
+CrossRef -> BackEndService: register paper_to_data DOI relationship
+CrossRef -> Scholix: new relationship links exist
+Scholix -> BackEndService: request for new relationship links
+Scholix <-- BackEndService: new relationship links
+
+@enduml
