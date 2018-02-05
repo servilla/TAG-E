@@ -12,12 +12,13 @@ database Scholix
 DataProducer -> DataRepository: submit data
 DataRepository -> DataRepository: review data
 DataRepository -> DataRepository: accept data
-DataRepository -> DataRepository: embargo data
+DataRepository -> DataRepository: access control data
 PaperProducer <-- DataRepository: data link
 PaperProducer -> Publisher: submit paper (with data link)
 Publisher -> DataRepository: request data (with data link)
 Publisher <-- DataRepository: data
 Publisher -> Publisher: review data
+Publisher -> Publisher: accept data
 Publisher -> PaperProducer: data accepted
 PaperProducer -> DataRepository: release data
 DataRepository -> DataRepository: create data DOI
@@ -28,6 +29,8 @@ PaperProducer -> Publisher: release paper (with data DOI)
 Publisher -> Publisher: create paper DOI (with data DOI)
 Publisher -> CrossRef: register paper DOI
 Publisher -> Publisher: publish paper (with data DOI)
+Publisher -> PaperProducer: paper DOI
+PaperProducer -> DataRepository: register data DOI to paper DOI relationship
 DataRepository -> DataCite: update data DOI with paper DOI relationship
 DataCite -> BackEndService: register data_to_paper DOI relationship
 DataCite -> Scholix: new relationship links exist

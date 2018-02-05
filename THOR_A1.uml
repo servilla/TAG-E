@@ -15,13 +15,15 @@ DataRepository -> DataRepository: accept data
 DataRepository -> DataRepository: create data DOI
 DataRepository -> DataCite: register data DOI
 DataRepository -> DataRepository: publish data
-DataRepository -> PaperProducer: DOI
+DataRepository -> PaperProducer: data DOI
 PaperProducer -> Publisher: submit paper (with data DOI)
 Publisher -> Publisher: review data
 Publisher -> Publisher: accept data
 Publisher -> Publisher: create paper DOI
 Publisher -> CrossRef: register paper DOI
 Publisher -> Publisher: publish paper (with data DOI)
+Publisher -> PaperProducer: paper DOI
+PaperProducer -> DataRepository: register data DOI to paper DOI relationship
 DataRepository -> DataCite: update data DOI with paper DOI relationship
 DataCite -> BackEndService: register data_to_paper DOI relationship
 DataCite -> Scholix: new relationship links exist
