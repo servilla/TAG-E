@@ -17,7 +17,15 @@ PaperProducer <-- DataRepository: data link
 PaperProducer -> Publisher: submit paper (with data link)
 Publisher -> DataRepository: request data (with data link)
 Publisher <-- DataRepository: data
-Publisher -> Publisher: review data
+Publisher -> Publisher: review data (for manuscript)
+
+alt data revision required
+
+    PaperProducer <-- Publisher: revise data and resubmit to data repository
+    DataProducer -> DataRepository: revised data (go back to 'submit data')
+
+end
+
 Publisher -> Publisher: accept data
 Publisher -> PaperProducer: data accepted
 PaperProducer -> DataRepository: release data
@@ -30,6 +38,13 @@ Publisher -> Publisher: create paper DOI (with data DOI)
 Publisher -> CrossRef: register paper DOI
 Publisher -> Publisher: publish paper (with data DOI)
 Publisher -> PaperProducer: paper DOI
+
+alt data DOI to paper DOI relationship
+
+    Publisher -> DataRepository: register data DOI to paper DOI relationship
+
+end
+
 PaperProducer -> DataRepository: register data DOI to paper DOI relationship
 DataRepository -> DataCite: update data DOI with paper DOI relationship
 DataCite -> BackEndService: register data_to_paper DOI relationship
